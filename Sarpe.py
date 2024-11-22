@@ -7,7 +7,7 @@ class Sarpe:
     # Initial, sarpele va fi compus din 3 elemente unul langa celalalt
     def __init__(self,):
         self.body=[Vector2(5,10),Vector2(4,10),Vector2(3,10)]
-        self.directie=Vector2(1,0)
+        self.directie=Vector2(0,0)
         self.new_block=False
 
         # Grafica pentru capul sarpelui
@@ -116,6 +116,16 @@ class Sarpe:
             body_copie.insert(0, body_copie[0] + self.directie);
             self.body = body_copie[:]
 
+    # Functia care schimba starea de adaugare bloc nou din False in True
     def adauga_block(self):
         self.new_block=True;
+
+    # Functia care adauga un sunet atunci cand fructul este mancat de catre sarpe
+    def adauga_sunetul(self):
+       self.sunet_mancat.play()
+
+    # Metoda prin care atunci cand jucatorul pierde, sa punem sarpele intr-o pozitie default
+    def resetare(self):
+        self.body=[Vector2(5,10),Vector2(4,10),Vector2(3,10)]
+        self.directie = Vector2(0,0)
 

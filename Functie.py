@@ -5,6 +5,9 @@ from Sarpe import Sarpe
 from Main import Main
 from pygame.math import Vector2
 
+# Adauga aceasta conditie la sunet pentru a avea o experienta mai buna
+pygame.mixer.pre_init(44100,-16,2,512)
+
 # Initializarea jocului
 pygame.init()
 

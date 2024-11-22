@@ -31,6 +31,12 @@ class Main:
             self.fruct.randomizare(cell_number)
             self.sarpe.adauga_block()
             self.scor+=1
+            self.sarpe.adauga_sunetul()
+
+        # In cazul in care un fruct se genereaza intr-o celula cu corpul sarpelui sa se genereze din nou
+        for block in self.sarpe.body[1:]:
+            if block==self.fruct.pos:
+                self.fruct.randomizare()
 
     # Verifica daca s-a indeplinit una dintre conditiile de oprire
     # 1. Sarpele s-a lovit de el insusi
@@ -44,8 +50,7 @@ class Main:
 
     # Cand se apeleaza aceasta functie, jocul s-a sfarsit
     def game_over(self):
-        pygame.quit()
-        sys.exit()
+        self.sarpe.resetare()
 
     # Metoda prin care vom desena un "pattern" pentru gazon
     def deseneaza_gazonul(self,canvas,cell_number,cell_size):
