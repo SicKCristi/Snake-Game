@@ -1,13 +1,15 @@
 from Fruct import Fruct
 from Sarpe import Sarpe
+from Ziduri import Ziduri
 import pygame
 import sys
 
 class Main:
     # Constructorul
-    def __init__(self,cell_number):
+    def __init__(self,cell_number,nivel=1):
         self.sarpe=Sarpe()
         self.fruct=Fruct(cell_number)
+        self.ziduri=Ziduri(cell_number,nivel)
         self.scor=0
 
     # Conditia de mutare a sarpelui se muta aici
@@ -19,6 +21,7 @@ class Main:
     # Elementele desenate initial in main se vor desena aici
     def deseneaza_elementele(self,cell_number,cell_size,canvas,Mar,font):
         self.deseneaza_gazonul(canvas,cell_number,cell_size)
+        self.ziduri.deseneaza_zidurile(cell_size,canvas)
         self.fruct.deseneaza_fructul(cell_size,canvas,Mar)
         self.sarpe.deseneaza_sarpele(cell_size,canvas)
         self.deseneaza_scorul(font,canvas,cell_number,cell_size,Mar)
@@ -27,6 +30,8 @@ class Main:
     # Daca sarpele a ajuns la fruct, acesta trebuie sa dispara din prima locatie si sa se repozitioneze
     # Si de asemenea, la sarpe se mai adauga un bloc la final
     def a_ajuns_sarpele_la_fruct(self,cell_number):
+        while self.ziduri.este_zid(self.fruct.pos):
+            self.fruct.randomizare(cell_number)
         if self.fruct.pos==self.sarpe.body[0]:
             self.fruct.randomizare(cell_number)
             self.sarpe.adauga_block()
@@ -41,11 +46,14 @@ class Main:
     # Verifica daca s-a indeplinit una dintre conditiile de oprire
     # 1. Sarpele s-a lovit de el insusi
     # 2. Sarpele s-a lovit de un perete al jocului
+    # 3. Sarpele s-a lobit de un zid generat de nivelul precizat
     def final(self,cell_number):
         for block in self.sarpe.body[1:]:
             if(self.sarpe.body[0]==block):
                 self.game_over()
         if not 0<=self.sarpe.body[0].x<cell_number or not 0<=self.sarpe.body[0].y<cell_number:
+            self.game_over()
+        if self.ziduri.este_zid(self.sarpe.body[0]):
             self.game_over()
 
     # Cand se apeleaza aceasta functie, jocul s-a sfarsit
@@ -64,6 +72,7 @@ class Main:
     # Functia care va desena scorul in fereastra de joc
     def deseneaza_scorul(self,font,screen,cell_number,cell_size,Mar):
         text_pt_scor=str(len(self.sarpe.body)-3)
+        #text_pt_scor=str(self.scor)
         suprafata_scor=font.render(text_pt_scor,True,(56,74,12))
         scor_x=int(cell_size*cell_number-60)
         scor_y=int(cell_size*cell_number-40)

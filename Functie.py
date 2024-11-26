@@ -5,6 +5,37 @@ from Sarpe import Sarpe
 from Main import Main
 from pygame.math import Vector2
 
+# Functie care are ca scop sa il lase pe player sa aleaga ce nivel de dificultate
+def selecteaza_nivel(font,screen,cell_number,cell_size):
+    while True:
+        screen.fill((176,215,70))  # Fundal verde
+
+        titlu=font.render("Selecteaza Nivelul:",True,(56,74,12))
+        nivel_1=font.render("1 - Margini",True,(56,74,12))
+        nivel_2=font.render("2 - L-uri pe colt",True,(56,74,12))
+        nivel_3=font.render("3 - Labirint",True,(56,74,12))
+
+        # Poziții pentru text
+        screen.blit(titlu,(cell_size,cell_size))
+        screen.blit(nivel_1,(cell_size,cell_size*3))
+        screen.blit(nivel_2,(cell_size,cell_size*5))
+        screen.blit(nivel_3,(cell_size,cell_size*7))
+
+        pygame.display.update()
+
+        # Capturarea evenimentelor pentru alegerea nivelului
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_1:
+                    return 1
+                elif event.key==pygame.K_2:
+                    return 2
+                elif event.key==pygame.K_3:
+                    return 3
+
 # Adauga aceasta conditie la sunet pentru a avea o experienta mai buna
 pygame.mixer.pre_init(44100,-16,2,512)
 
@@ -42,8 +73,11 @@ SCREEN_UPDATE=pygame.USEREVENT
 # Se va crea un timer pentru receptarea evenimentului
 pygame.time.set_timer(SCREEN_UPDATE,150)
 
+# Se va da nivelul de dificultate in functie de input-ul utilizatorului
+nivel_selectat=selecteaza_nivel(font,screen,cell_number,cell_size)
+
 # Se va crea un obiect de tipul Main
-jocul=Main(cell_number)
+jocul=Main(cell_number,nivel=nivel_selectat)
 
 # Acest while va merge la infinit daca nu se da o conditie de oprire din interior
 while True:
