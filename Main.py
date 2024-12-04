@@ -41,7 +41,7 @@ class Main:
         # In cazul in care un fruct se genereaza intr-o celula cu corpul sarpelui sa se genereze din nou
         for block in self.sarpe.body[1:]:
             if block==self.fruct.pos:
-                self.fruct.randomizare()
+                self.fruct.randomizare(cell_number)
 
     # Verifica daca s-a indeplinit una dintre conditiile de oprire
     # 1. Sarpele s-a lovit de el insusi
